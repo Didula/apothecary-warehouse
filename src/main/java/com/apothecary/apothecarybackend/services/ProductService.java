@@ -71,7 +71,7 @@ public class ProductService {
     }
 
     /**
-     * Price engine
+     * Price calculator
      * @param numberOfUnits number of units
      * @param cartonSize product carton size
      * @param cartonPrice product carton price
