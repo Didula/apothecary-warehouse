@@ -5,6 +5,7 @@ import com.apothecary.apothecarybackend.modals.Price;
 import com.apothecary.apothecarybackend.modals.PriceTable;
 import com.apothecary.apothecarybackend.modals.PriceTableRow;
 import com.apothecary.apothecarybackend.repositories.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class ProductService {
     final ProductRepository productRepository;
 
@@ -20,6 +22,12 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Prepare the price table
+     * @param productCode product code
+     * @param numberOfUnits number of units
+     * @return Initialized price table.
+     */
     public PriceTable preparePriceTable(String productCode, int numberOfUnits) {
         PriceTable priceTable = new PriceTable();
         List<PriceTableRow> priceTableRowList = new ArrayList<>();
@@ -40,7 +48,14 @@ public class ProductService {
         return priceTable;
     }
 
+    /**
+     * Calculate user defined number of unit price.
+     * @param productCode product code
+     * @param numberOfUnits number of units
+     * @return Calculated Price
+     */
     public Price calculatePrice(String productCode, int numberOfUnits){
+        long startTime = System.currentTimeMillis();
         Price price = new Price();
         Product product = this.productRepository.findByCode(productCode);
         price.setNumberOfUnits(numberOfUnits);
@@ -51,9 +66,20 @@ public class ProductService {
                 product.getSingleSaleMarkup(),
                 product.getCartonSaleDiscount(),
                 product.getDiscountThreshold()));
+        log.info("Price calculation took " + (System.currentTimeMillis() - startTime) + " ms");
         return price;
     }
 
+    /**
+     * Price engine
+     * @param numberOfUnits number of units
+     * @param cartonSize product carton size
+     * @param cartonPrice product carton price
+     * @param singleSaleMarkup markup to apply for a single sale
+     * @param cartonSaleDiscount discount percentage as a decimal
+     * @param discountThreshold after how many cartons, discount will be applied
+     * @return Calculated price
+     */
     public double calculatePrice(
             int numberOfUnits,
             int cartonSize,
