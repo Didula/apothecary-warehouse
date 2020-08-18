@@ -1,22 +1,26 @@
 package com.apothecary.apothecarybackend.controllers;
 
-import com.apothecary.apothecarybackend.beans.PriceTable;
-import com.apothecary.apothecarybackend.beans.Product;
+import com.apothecary.apothecarybackend.entities.Product;
+import com.apothecary.apothecarybackend.modals.Price;
+import com.apothecary.apothecarybackend.modals.PriceTable;
 import com.apothecary.apothecarybackend.repositories.ProductRepository;
+import com.apothecary.apothecarybackend.services.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-public class StoreController{
+public class StoreController {
 
-    final
-    ProductRepository productRepository;
+    final ProductRepository productRepository;
+    final ProductService productService;
 
-    public StoreController(ProductRepository productRepository) {
+    public StoreController(ProductRepository productRepository, ProductService productService) {
         this.productRepository = productRepository;
+        this.productService = productService;
     }
 
     @GetMapping("/products")
@@ -25,12 +29,17 @@ public class StoreController{
     }
 
     @GetMapping("/products/{code}")
-    public List<Product> product(@PathVariable String code) {
+    public Product product(@PathVariable String code) {
         return productRepository.findByCode(code);
     }
 
     @GetMapping("/products/{code}/table")
-    public PriceTable table(){
-        return null;
+    public PriceTable table(@PathVariable String code, @RequestParam int units) {
+        return productService.preparePriceTable(code, units);
+    }
+
+    @GetMapping("/products/{code}/price")
+    public Price price(@PathVariable String code, @RequestParam int units) {
+        return productService.calculatePrice(code, units);
     }
 }

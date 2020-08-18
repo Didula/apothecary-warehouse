@@ -1,4 +1,4 @@
-package com.apothecary.apothecarybackend.beans;
+package com.apothecary.apothecarybackend.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

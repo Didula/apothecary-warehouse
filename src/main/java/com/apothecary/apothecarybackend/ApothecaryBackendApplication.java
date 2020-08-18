@@ -1,6 +1,6 @@
 package com.apothecary.apothecarybackend;
 
-import com.apothecary.apothecarybackend.beans.Product;
+import com.apothecary.apothecarybackend.entities.Product;
 import com.apothecary.apothecarybackend.repositories.ProductRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
