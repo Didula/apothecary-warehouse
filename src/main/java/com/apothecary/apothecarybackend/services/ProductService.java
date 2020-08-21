@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class ProductService {
+public class ProductService implements ProductServiceInterface {
     final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -28,6 +28,7 @@ public class ProductService {
      * @param numberOfUnits number of units
      * @return Initialized price table.
      */
+    @Override
     public PriceTable preparePriceTable(String productCode, int numberOfUnits) {
         long startTime = System.currentTimeMillis();
         PriceTable priceTable = new PriceTable();
@@ -56,6 +57,7 @@ public class ProductService {
      * @param numberOfUnits number of units
      * @return Calculated Price
      */
+    @Override
     public Price calculatePrice(String productCode, int numberOfUnits){
         long startTime = System.currentTimeMillis();
         Price price = new Price();
@@ -82,6 +84,7 @@ public class ProductService {
      * @param discountThreshold after how many cartons, discount will be applied
      * @return Calculated price
      */
+    @Override
     public double calculatePrice(
             int numberOfUnits,
             int cartonSize,

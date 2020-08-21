@@ -6,7 +6,7 @@ import com.apothecary.apothecarybackend.exception.StoreControllerValidationExcep
 import com.apothecary.apothecarybackend.modals.Price;
 import com.apothecary.apothecarybackend.modals.PriceTable;
 import com.apothecary.apothecarybackend.repositories.ProductRepository;
-import com.apothecary.apothecarybackend.services.ProductService;
+import com.apothecary.apothecarybackend.services.ProductServiceInterface;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,11 @@ import java.util.List;
 public class StoreController {
 
     final ProductRepository productRepository;
-    final ProductService productService;
+    final ProductServiceInterface productService;
 
-    public StoreController(ProductRepository productRepository, ProductService productService) {
+    public StoreController(ProductRepository productRepository, ProductServiceInterface productServiceInterface) {
         this.productRepository = productRepository;
-        this.productService = productService;
+        this.productService = productServiceInterface;
     }
 
     @GetMapping("/products")
