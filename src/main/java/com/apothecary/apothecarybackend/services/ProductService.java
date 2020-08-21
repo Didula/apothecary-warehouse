@@ -29,6 +29,7 @@ public class ProductService {
      * @return Initialized price table.
      */
     public PriceTable preparePriceTable(String productCode, int numberOfUnits) {
+        long startTime = System.currentTimeMillis();
         PriceTable priceTable = new PriceTable();
         List<PriceTableRow> priceTableRowList = new ArrayList<>();
         Product product = this.productRepository.findByCode(productCode);
@@ -45,11 +46,12 @@ public class ProductService {
             priceTableRowList.add(priceTableRow);
         }
         priceTable.setTableRowList(priceTableRowList);
+        log.info("Price table preparation took " + (System.currentTimeMillis() - startTime) + " ms");
         return priceTable;
     }
 
     /**
-     * Calculate user defined number of unit price.
+     * Calculate price for user defined number of units.
      * @param productCode product code
      * @param numberOfUnits number of units
      * @return Calculated Price
